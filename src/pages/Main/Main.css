@@ -1,0 +1,42 @@
+.App {}
+
+.inventory {
+    height: 80vh;
+    overflow-y: scroll;
+    border-radius: 15px;
+    border: 1px solid black;
+    margin: auto 10%;
+}
+
+.buttons {
+    margin-top: 15px;
+}
+
+.categories {
+    margin: 0 10%;
+    margin-bottom: 20px;
+    white-space: nowrap;
+    display: inline-block;
+    overflow-x: scroll;
+    width: 80%;
+}
+
+@media only screen and (max-width: 767px) {
+    .categories {
+        height: 60px;
+        margin: 0;
+        margin-bottom: 20px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 98%;
+        white-space: nowrap;
+        display: inline-block;
+    }
+    .inventory {
+        height: 70vh;
+        overflow-y: scroll;
+        border-radius: 15px;
+        border: 1px solid black;
+        margin: auto auto;
+    }
+}
