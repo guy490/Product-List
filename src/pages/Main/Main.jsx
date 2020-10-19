@@ -37,6 +37,8 @@ class App extends Component {
           currentCat.forEach((cat) => {
             if (cat === item.category) {
               selected = true;
+            } else {
+              selected = false;
             }
           });
         }
@@ -72,6 +74,8 @@ class App extends Component {
     currentCat.forEach((c) => {
       if (c === cat) {
         active = true;
+      } else {
+        active = false;
       }
     });
 
@@ -91,6 +95,9 @@ class App extends Component {
         if (currentCat[i] === cat) {
           found = true;
           currentCat.splice(i, 1);
+        } else {
+          found = false;
+          currentCat = [];
         }
       }
 
