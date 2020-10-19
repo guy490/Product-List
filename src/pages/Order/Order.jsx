@@ -48,16 +48,19 @@ const Order = (props) => {
   };
   const createHtmlCartList = () => {
     const itemStyle =
-      'display: flex; text-align: right; direction: rtl;font-size: 20px;width: 100%;height: 40px;align-items: center;padding-right: 10px;border-bottom: 1px solid black;';
-    return `${cartReducer.map((item) => {
+      'display: flex; text-align: right; direction: rtl;font-size: 100%;width: 100%;height: 40px;border-bottom: 1px solid black;';
+    var createdHTML = '';
+    cartReducer.forEach((item) => {
       const isFruits = item.category === 'פירות' || item.category === 'ירקות';
-      return `<div key=${item.id} style="${itemStyle}">
-          <div style="width: 50%;">${item.name}</div>
-          <div style="width: 50%;">
+      createdHTML += `<div key=${item.id} style="${itemStyle}">
+          <div style="width: 50%;border-left: 1px solid black;margin: auto;text-align: center;">${
+            item.name
+          }</div><div style="width: 50%;border-right: 1px solid black;margin: auto;text-align: center;">
             כמות: ${item.amount} ${isFruits ? 'ק"ג' : 'יחידות'}
           </div>
         </div>`;
-    })}`;
+    });
+    return createdHTML;
   };
   const sendEmail = (e) => {
     e.preventDefault();
@@ -73,10 +76,9 @@ const Order = (props) => {
     } else {
       const orderName = target[0].value;
       const orderNote = target[1].value;
-      const tableStyle =
-        'width: 30%;border: 1px solid black;border-radius: 15px;';
-      const orderTable = `<div><div style="font-size: 15px">שלום,<br />התקבלה הזמנה מאת ${orderName}, להלן הפירוט:</div><div style="${tableStyle}">
-      ${createHtmlCartList()}<div style="margin: 0 5%;font-size: 15px;"><h4>הערות</h4>${orderNote}</div></div><div style="font-size: 15px">בברכת יום טוב</div></div>`;
+      const tableStyle = 'width: 30%;border: 1px solid black;';
+      const orderTable = `<div style="font-size: 15px"><div>שלום,<br />התקבלה הזמנה מאת ${orderName}, להלן הפירוט:</div><div style="${tableStyle}">
+      ${createHtmlCartList()}<div style="margin: 0 5%;font-size: 100%;"><h4>הערות</h4><div>${orderNote}</div></div></div><div>בברכת יום טוב</div></div>`;
       server.post('/send_email', { orderName, orderTable }).then(() => {
         window.alert('נשלח ההזמנה בהצלחה! יצרו איתך קשר בהקדם');
         clearCart();
