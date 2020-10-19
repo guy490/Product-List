@@ -38,6 +38,12 @@
     cursor: pointer;
 }
 
+.order-error {
+    color: red;
+    font-size: medium;
+    visibility: hidden;
+}
+
 @media only screen and (max-width: 767px) {
     .seleted-list {
         width: 100%;

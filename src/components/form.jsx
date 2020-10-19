@@ -12,12 +12,27 @@ const Form = (props) => {
           <div className="field">
             <input
               type="text"
-              name="shipping[first-name]"
               placeholder="שם המזמין"
               required
               onInvalid={({ target }) =>
                 target.setCustomValidity('אנא הכנס את פרטי העסק')
               }
+              onInput={({ target }) => {
+                target.setCustomValidity('');
+              }}
+            />
+          </div>
+          <div className="field">
+            <input
+              type="text"
+              placeholder="אימייל"
+              required
+              onInvalid={({ target }) =>
+                target.setCustomValidity('אנא הזן אימייל')
+              }
+              onInput={({ target }) => {
+                target.setCustomValidity('');
+              }}
             />
           </div>
         </div>

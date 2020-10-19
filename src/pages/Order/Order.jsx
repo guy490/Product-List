@@ -29,6 +29,7 @@ const Order = (props) => {
               placeholder={isFruits ? 'ק"ג' : 'כמות'}
               value={item.amount}
               onChange={({ target }) => {
+                target.style.border = '';
                 if (target.value >= 0) {
                   editFromCart(item.id, target.value);
                 }
@@ -62,27 +63,39 @@ const Order = (props) => {
     });
     return createdHTML;
   };
+  const replaceRange = (s, substitute, start, end) => {
+    return s.substring(0, start) + substitute + s.substring(end);
+  };
+  const randomNumber = () => {
+    return Math.floor(Math.random() * 100) + 7;
+  };
   const sendEmail = (e) => {
     e.preventDefault();
     const { target } = e;
     const isAllAmountsAboveZero =
       cartReducer.findIndex((item) => parseInt(item.amount) === 0) === -1;
-    console.log(cartReducer);
-    console.log(isAllAmountsAboveZero);
-    console.log(cartReducer.findIndex((item) => item.amount === 0));
-    console.log(isAllAmountsAboveZero);
+    const timeStamp = replaceRange('' + Date.now(), '' + randomNumber(), 0, 6);
     if (!isAllAmountsAboveZero) {
-      alert.show('שים לב כי יש לך מוצרים עם כמות 0');
+      document.querySelector('.order-error').style.visibility = 'visible';
+      document.querySelectorAll('.order-input').forEach((item) => {
+        if (item.value.toString() === '0') {
+          item.style.border = '2px solid red';
+        }
+      });
     } else {
+      document.querySelector('.order-error').style.visibility = 'hidden';
       const orderName = target[0].value;
-      const orderNote = target[1].value;
+      const orderEmail = target[1].value;
+      const orderNote = target[2].value;
       const tableStyle = 'width: 30%;border: 1px solid black;';
       const orderTable = `<div style="font-size: 15px"><div>שלום,<br />התקבלה הזמנה מאת ${orderName}, להלן הפירוט:</div><div style="${tableStyle}">
-      ${createHtmlCartList()}<div style="margin: 0 5%;font-size: 100%;"><h4>הערות</h4><div>${orderNote}</div></div></div><div>בברכת יום טוב</div></div>`;
-      server.post('/send_email', { orderName, orderTable }).then(() => {
-        window.alert('נשלח ההזמנה בהצלחה! יצרו איתך קשר בהקדם');
-        clearCart();
-      });
+      ${createHtmlCartList()}<div style="margin: 0 5%;font-size: 100%;"><h4>הערות</h4><div>${orderNote}</div></div></div><div style="border: 1px solid black"><lable>מס' הזמנה: </lable>${timeStamp}</div><div>בברכת יום טוב</div></div>`;
+      server
+        .post('/send_email', { orderName, orderTable, orderEmail })
+        .then(() => {
+          alert.success(`נשלח ההזמנה בהצלחה! \n מספר הזמנה: ${timeStamp}`);
+          clearCart();
+        });
     }
   };
   return (
@@ -97,6 +110,7 @@ const Order = (props) => {
       <div className="ui middle aligned divided list seleted-list">
         {renderCartList()}
       </div>
+      <div className="order-error">שים לב, ישנם מוצרים שלא בחרת עבורם כמות</div>
       <Form sendEmail={sendEmail} />
     </div>
   );
