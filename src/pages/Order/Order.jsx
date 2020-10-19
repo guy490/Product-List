@@ -87,13 +87,15 @@ const Order = (props) => {
       const orderName = target[0].value;
       const orderEmail = target[1].value;
       const orderNote = target[2].value;
-      const tableStyle = 'width: 30%;border: 1px solid black;';
-      const orderTable = `<div style="font-size: 15px"><div>שלום,<br />התקבלה הזמנה מאת ${orderName}, להלן הפירוט:</div><div style="${tableStyle}">
-      ${createHtmlCartList()}<div style="margin: 0 5%;font-size: 100%;"><h4>הערות</h4><div>${orderNote}</div></div></div><div style="border: 1px solid black"><lable>מס' הזמנה: </lable>${timeStamp}</div><div>בברכת יום טוב</div></div>`;
+      const tableStyle = 'width: 400px;border: 1px solid black;';
+      const orderTable = `<div style="font-size: 15px;direction: rtl;"><div>שלום,<br />התקבלה הזמנה מאת ${orderName}, להלן הפירוט:</div><div style="${tableStyle}">
+      ${createHtmlCartList()}<div style="margin: 0 5%;font-size: 100%;"><h4>הערות</h4><div>${orderNote}</div></div></div><div style="border: 1px solid black;margin-top: 20px;width: 400px;"><lable>מס' הזמנה: </lable>${timeStamp}</div><div style="margin-top: 10px">בברכת יום טוב</div></div>`;
       server
         .post('/send_email', { orderName, orderTable, orderEmail })
         .then(() => {
-          alert.success(`נשלח ההזמנה בהצלחה! \n מספר הזמנה: ${timeStamp}`);
+          alert.success(
+            `נשלח ההזמנה בהצלחה!           מספר הזמנה: ${timeStamp}`
+          );
           clearCart();
         });
     }

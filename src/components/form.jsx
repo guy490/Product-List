@@ -27,11 +27,24 @@ const Form = (props) => {
               type="text"
               placeholder="אימייל"
               required
-              onInvalid={({ target }) =>
-                target.setCustomValidity('אנא הזן אימייל')
-              }
+              onChange={({ target }) => {
+                var pattern = new RegExp(
+                  /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+                );
+
+                if (!pattern.test(target.value)) {
+                  target.style.border = '2px solid red';
+                  target.setCustomValidity('אנא הזן אימייל תקין');
+                } else {
+                  target.setCustomValidity('');
+                }
+              }}
+              onInvalid={({ target }) => {
+                target.setCustomValidity('אנא הזן אימייל תקין');
+              }}
               onInput={({ target }) => {
                 target.setCustomValidity('');
+                target.style.border = '';
               }}
             />
           </div>
